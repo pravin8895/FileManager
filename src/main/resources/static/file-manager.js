@@ -1,74 +1,97 @@
 window.onload = function(){
+	var components ={};
+	components.radioDeleteButton = document.getElementById('radioDelete');
+	components.radioCopyButton =document.getElementById('radioCopy');
+	components.radioDownloadButton =document.getElementById('radioDownload');
+	components.deleteButton = document.getElementById('deleteButton');
+	components.copyButton = document.getElementById('copyButton');
+	components.downloadButton = document.getElementById('downloadButton');
+	components.statusText = document.getElementById('status');
+	components.destinationText = document.getElementById('destination');
+	components.destinationLabel = document.getElementById('destination_label');
+	components.sourceText = document.getElementById('source');
 	
-	document.getElementById('radioDelete').onclick = function(){
+	
+	components.radioDeleteButton.onclick = function(){
 		setDestinationHidden(true);
 		resetButtonsAndStatus();
-		toggleButtonVisibility('deleteButton');
+		toggleButtonVisibility(components.deleteButton);
 	}
 	
-	document.getElementById('radioCopy').onclick = function(){
+	components.radioCopyButton.onclick = function(){
 		setDestinationHidden(false);
 		resetButtonsAndStatus();
-		toggleButtonVisibility('copyButton');
+		toggleButtonVisibility(components.copyButton);
 		
 	}
-	document.getElementById('radioDownload').onclick = function(){
+	components.radioDownloadButton.onclick = function(){
 		setDestinationHidden(true);
 		resetButtonsAndStatus();
-		toggleButtonVisibility('downloadButton');
+		toggleButtonVisibility(components.downloadButton);
 	}
 	
-	document.getElementById('deleteButton').onclick = function(){
+	components.deleteButton.onclick = function(){
+		updateStatus("Please Wait While processing...");
 		var xhttp = new XMLHttpRequest();
 		  xhttp.onreadystatechange = function() {
 			  if (this.readyState == 4 && this.status == 200) {
-			    document.getElementById("status").innerText = "DELETED SUCCESSFULLY"
+				  updateStatus("DELETED SUCCESSFULLY");
+			  }else if(this.status == 500){
+				  updateStatus("ERROR OCCURED");
 			  }
 			};
-			xhttp.open("GET", "/delete?sourceFile="+document.getElementById("source").value, true);
+			xhttp.open("GET", "/delete?sourceFile="+components.sourceText.value, true);
+		  xhttp.send();
+	};
+	
+	components.downloadButton.onclick = function(){
+		updateStatus("Please Wait While processing...");
+		var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+			  if (this.readyState == 4 && this.status == 200) {
+				  updateStatus("DOWNLOADED SUCCESSFULLY - " +
+				    		this.responseText);
+			  }else if(this.status == 500){
+				  updateStatus("ERROR OCCURED");
+			  }
+			};
+			xhttp.open("GET", "/download?downloadUrl="+components.sourceText.value, true);
 		  xhttp.send();
 	}
 	
-	document.getElementById('downloadButton').onclick = function(){
+	components.copyButton.onclick = function(){
+		updateStatus("Please Wait While processing...");
 		var xhttp = new XMLHttpRequest();
 		  xhttp.onreadystatechange = function() {
 			  if (this.readyState == 4 && this.status == 200) {
-				  this.responseText
-			    document.getElementById("status").innerText = "DOWNLOADED SUCCESSFULLY - " +
-			    		this.responseText;
-			    
+				  updateStatus("COPIED SUCCESSFULLY");
+			  }else if(this.status == 500){
+				  updateStatus("ERROR OCCURED");
 			  }
 			};
-			xhttp.open("GET", "/download?downloadUrl="+document.getElementById("source").value, true);
-		  xhttp.send();
-	}
-	
-	document.getElementById('copyButton').onclick = function(){
-		var xhttp = new XMLHttpRequest();
-		  xhttp.onreadystatechange = function() {
-			  if (this.readyState == 4 && this.status == 200) {
-			    document.getElementById("status").innerText = "COPIED SUCCESSFULLY"
-			  }
-			};
-			xhttp.open("GET", "/copy?sourceFile="+document.getElementById("source").value+"&destinationFolder="+document.getElementById("destination").value, true);
+			xhttp.open("GET", "/copy?sourceFile="+
+					components.sourceText.value+"&destinationFolder="+
+					components.destinationText.value, true);
 		  xhttp.send();
 	}
 	
 	
 	function resetButtonsAndStatus() {
-		document.getElementById('deleteButton').hidden = true;
-		document.getElementById('copyButton').hidden = true;
-		document.getElementById('downloadButton').hidden = true;
-		document.getElementById("status").innerText = ""
+		components.deleteButton.hidden = true;
+		components.copyButton.hidden = true;
+		components.downloadButton.hidden = true;
+		components.statusText.innerText = ""
 	}
 	
-	function toggleButtonVisibility(buttonId) {
-		document.getElementById(buttonId).hidden = false;
+	function toggleButtonVisibility(selectedButton) {
+		selectedButton.hidden = false;
 	}
-	
+	function updateStatus(status) {
+		components.statusText.innerText = status;
+	}
 	function setDestinationHidden(isHidden) {
-		document.getElementById('destination_label').hidden = isHidden;
-		document.getElementById('destination').hidden = isHidden;
+		components.destinationLabel.hidden = isHidden;
+		components.destinationText.hidden = isHidden;
 	}
 	
 }

@@ -1,4 +1,4 @@
-package com.Files.FileManager;
+package com.Files.FileManager.Controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +10,7 @@ import java.net.URL;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ public class FileManagerController {
 	 * delete method is called to delete the given source file
 	 * @param sourceFile - the Source file to be deleted
 	 * */
-	@RequestMapping("/delete")
+	@RequestMapping(value = "/delete", method= RequestMethod.GET)
 	public void delete (@RequestParam(value ="sourceFile",required=true) String source) throws Exception {
 		logger.info("Delete Method Called");
 		File sourceFile = new File(source); 
@@ -39,7 +40,7 @@ public class FileManagerController {
 	 * download method is called to download the given source file in URL
 	 * @param downloadUrl - the URL of the file to be downloaded
 	 * */
-	@RequestMapping("/download")
+	@RequestMapping(value = "/download", method= RequestMethod.GET)
 	public String download (@RequestParam(value ="downloadUrl",required=true) String downloadUrl) throws MalformedURLException, IOException {
 		logger.info("Download Method Called");
 		String username = System. getProperty("user.name");
@@ -63,7 +64,7 @@ public class FileManagerController {
 	 * @param  source - the source file to be copied
 	 * @param  destination - the destination folder where the file is to be pasted
 	 * */
-	@RequestMapping("/copy")
+	@RequestMapping(value = "/copy", method= RequestMethod.GET)
 	public void copy (@RequestParam(value ="sourceFile",required=true) String source,
 			@RequestParam(value ="destinationFolder",required=true) String destination) throws Exception {
 		logger.info("copy Method Called");
