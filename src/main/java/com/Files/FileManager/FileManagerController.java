@@ -20,7 +20,7 @@ public class FileManagerController {
 	
 	/*
 	 * delete method is called to delete the given source file
-	 * @param source - the Source file to be deleted
+	 * @param sourceFile - the Source file to be deleted
 	 * */
 	@RequestMapping("/delete")
 	public void delete (@RequestParam(value ="sourceFile",required=true) String source) throws Exception {
