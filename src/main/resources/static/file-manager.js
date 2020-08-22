@@ -1,5 +1,5 @@
 window.onload = function(){
-	var components ={};
+	var components ={},constants={};
 	components.radioDeleteButton = document.getElementById('radioDelete');
 	components.radioCopyButton =document.getElementById('radioCopy');
 	components.radioDownloadButton =document.getElementById('radioDownload');
@@ -10,22 +10,29 @@ window.onload = function(){
 	components.destinationText = document.getElementById('destination');
 	components.destinationLabel = document.getElementById('destination_label');
 	components.sourceText = document.getElementById('source');
+	components.sourceHintText = document.getElementById('source_hint');
+	components.destinationHintText = document.getElementById('destination_hint');
+	constants.localSorceFileHint = "(Ex: C:/source/Photoshop.exe)";
+	constants.downloadUrlHint = "(Ex: https://pravinkumarmaruthai.site/contact.html)";
 	
 	
 	components.radioDeleteButton.onclick = function(){
 		setDestinationHidden(true);
+		setSourceHint(constants.localSorceFileHint);
 		resetButtonsAndStatus();
 		toggleButtonVisibility(components.deleteButton);
 	}
 	
 	components.radioCopyButton.onclick = function(){
 		setDestinationHidden(false);
+		setSourceHint(constants.localSorceFileHint);
 		resetButtonsAndStatus();
 		toggleButtonVisibility(components.copyButton);
 		
 	}
 	components.radioDownloadButton.onclick = function(){
 		setDestinationHidden(true);
+		setSourceHint(constants.downloadUrlHint);
 		resetButtonsAndStatus();
 		toggleButtonVisibility(components.downloadButton);
 	}
@@ -92,6 +99,11 @@ window.onload = function(){
 	function setDestinationHidden(isHidden) {
 		components.destinationLabel.hidden = isHidden;
 		components.destinationText.hidden = isHidden;
+		components.destinationHintText.hidden = isHidden;
 	}
+	function setSourceHint(hint) {
+		components.sourceHintText.textContent = hint;
+	}
+	
 	
 }
