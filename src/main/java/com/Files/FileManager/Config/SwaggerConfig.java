@@ -1,4 +1,4 @@
-package com.Files.FileManager;
+package com.Files.FileManager.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
